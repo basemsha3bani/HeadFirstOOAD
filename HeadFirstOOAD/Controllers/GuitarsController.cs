@@ -90,19 +90,12 @@ namespace HeadFirstOOAD.Controllers
             {
                 await _GuitarService.Add(GuitarDataModel);
             }
-            catch (DbUpdateException)
+            catch (Exception ex)
             {
-                if (GuitarDataModelExists(GuitarDataModel.serialNumber))
-                {
-                    return Conflict();
-                }
-                else
-                {
-                    throw;
-                }
+                return BadRequest(ex.Message);
             }
 
-            return CreatedAtAction("GetGuitarDataModel", new { id = GuitarDataModel.serialNumber }, GuitarDataModel);
+            return Ok();
         }
 
         // DELETE: api/Guitars/5

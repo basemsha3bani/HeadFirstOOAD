@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using Validations;
 
 namespace ServicesClasses
 {
@@ -18,7 +19,12 @@ namespace ServicesClasses
     }
     public async Task Add(GuitarDataModel Guitar)
     {
-      await  _GuitarOperations.Add(Guitar);
+            var validationResult = new GuitarValidator().Validate(Guitar);
+            if(!validationResult.IsValid)
+            {
+                throw new Exception(validationResult.Errors[0].ToString());
+            }
+            await  _GuitarOperations.Add(Guitar);
     }
 
     public async Task Delete(int id)

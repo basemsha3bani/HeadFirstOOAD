@@ -61,7 +61,7 @@ namespace DataRepository.GateWay
 
         internal async static Task<TModelRepository> GetById(Expression<Func<TModelRepository, bool>> predicate)
         {
-            return dbConext.Set<TModelRepository>().Where(predicate).FirstOrDefault();
+            return dbConext.Set<TModelRepository>().AsNoTracking().Where(predicate).FirstOrDefault();
 
 
         }

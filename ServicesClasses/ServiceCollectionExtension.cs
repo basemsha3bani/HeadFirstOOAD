@@ -2,7 +2,9 @@
 using DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses;
 using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
 using Microsoft.Extensions.DependencyInjection;
+using ServicesClasses.Interfaces;
 using System;
+using Validations;
 
 namespace ServicesClasses
 {
@@ -12,8 +14,9 @@ namespace ServicesClasses
         {
 
             services.AddScoped<IGuitarOperations, GuitarOperations>();
+            services.AddScoped<IAuthService, AuthService>();
 
-            services.AddServicesOnWhichDataRepositoryDepend();
+            services.AddServicesOnWhichDataRepositoryDepend().AddValidationServices(); ;
             return services;
         }
 

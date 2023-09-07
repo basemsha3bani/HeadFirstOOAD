@@ -16,11 +16,11 @@ namespace DataModel
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        [Display(Name = "Remember me?")]
-        public bool RememberMe { get; set; }
 
-       // public IList<AuthenticationScheme> ExternalLogins { get; set; }
+        public string Message { get; set; }
 
-        public string ReturnUrl { get; set; }
+
+        public bool IsAuthenticated { get; set; }
+
     }
 }

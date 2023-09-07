@@ -5,6 +5,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\ClassLibrary1\Validations.csproj" />
     <ProjectReference Include="..\DataRepository\DataRepository.csproj" />
   </ItemGroup>
 
