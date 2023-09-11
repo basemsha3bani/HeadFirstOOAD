@@ -11,15 +11,16 @@ namespace ServicesClasses
     public class GuitarService
     {
         private readonly IGuitarOperations _GuitarOperations;
-     
-    public GuitarService(IGuitarOperations GuitarOperations)
+        private readonly GuitarValidator _GuitarValidator;
+
+        public GuitarService(IGuitarOperations GuitarOperations, GuitarValidator GuitarValidator)
     {
         _GuitarOperations = GuitarOperations;
-
+        _GuitarValidator = GuitarValidator;
     }
     public async Task Add(GuitarDataModel Guitar)
     {
-            var validationResult = new GuitarValidator().Validate(Guitar);
+            var validationResult = _GuitarValidator.Validate(Guitar);
             if(!validationResult.IsValid)
             {
                 throw new Exception(validationResult.Errors[0].ToString());
