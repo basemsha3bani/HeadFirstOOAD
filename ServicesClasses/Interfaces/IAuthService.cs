@@ -8,6 +8,6 @@ namespace ServicesClasses.Interfaces
 {
     public interface IAuthService
     {
-        Task<LoginDataModel> GetTokenAsync(LoginDataModel model);
+        Task<UsersDataModel> GetTokenAsync(UsersDataModel model);
     }
 }

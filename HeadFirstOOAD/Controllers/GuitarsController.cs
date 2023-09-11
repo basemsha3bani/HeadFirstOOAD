@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using DataModel;
 using ServicesClasses;
 using Microsoft.AspNetCore.Cors;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HeadFirstOOAD.Controllers
 {
@@ -81,6 +82,7 @@ namespace HeadFirstOOAD.Controllers
         // POST: api/Guitars {"serialNumber":"1","price":"1","builder":"builder1","model":"model1","type":"type1","backWood":"backWood1","topWood":"topWood1"}
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
+        [Authorize(Roles = "admin")]
         [HttpPost]
         [Route("PostGuitar")]
         public async Task<ActionResult> PostGuitarDataModel(GuitarDataModel GuitarDataModel)

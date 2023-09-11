@@ -48,6 +48,7 @@ namespace DataRepository.GateWay
        
 
         public DbSet<DataRepositoryEntities.Guitar> guitars { get; set; }
+        public DbSet<DataRepositoryEntities.Security.Users> Users { get; set; }
 
 
     }

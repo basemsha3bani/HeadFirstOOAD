@@ -1,4 +1,6 @@
-﻿using FluentValidation.AspNetCore;
+﻿using DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses;
+using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
+using FluentValidation.AspNetCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -15,8 +17,9 @@ namespace DataRepository
         {
 
             services.AddScoped<EnumMapper>();
-                    
-                    
+            services.AddScoped<IGuitarOperations, GuitarOperations>();
+            services.AddScoped<IUsersOperations, UsersOperations>();
+
 
             return services;
         }

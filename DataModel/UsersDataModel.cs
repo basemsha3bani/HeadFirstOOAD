@@ -6,21 +6,25 @@ using System.Text;
 
 namespace DataModel
 {
-    public class LoginDataModel
+    public class UsersDataModel
     {
         [Required]
-        [EmailAddress]
-        public string Email { get; set; }
+        
+        public string UserName { get; set; }
 
         [Required]
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-
+        public string Role { get; set; }
         public string Message { get; set; }
 
 
         public bool IsAuthenticated { get; set; }
+
+        public string Token { get; set; }
+
+        
 
     }
 }

@@ -19,7 +19,7 @@ namespace HeadFirstOOAD.Controllers
       
 
         [HttpPost("token")]
-        public async Task<IActionResult> GetTokenAsync([FromBody] LoginDataModel model)
+        public async Task<IActionResult> GetTokenAsync([FromBody] UsersDataModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

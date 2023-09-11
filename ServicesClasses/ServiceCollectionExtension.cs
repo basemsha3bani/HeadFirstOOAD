@@ -1,4 +1,5 @@
-﻿using DataRepository;
+﻿using DataModel;
+using DataRepository;
 using DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses;
 using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,8 +14,9 @@ namespace ServicesClasses
         public static IServiceCollection AddServicesOnWhichServiceClassLibaryDepend(this IServiceCollection services)
         {
 
-            services.AddScoped<IGuitarOperations, GuitarOperations>();
+        
             services.AddScoped<IAuthService, AuthService>();
+           
 
             services.AddServicesOnWhichDataRepositoryDepend().AddValidationServices(); ;
             return services;

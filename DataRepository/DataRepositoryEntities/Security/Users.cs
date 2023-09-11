@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DataRepository.DataRepositoryEntities.Security
 {
-    internal class Users
+    public class Users:IRepository
     {
         public int Id { get; set; }
 
