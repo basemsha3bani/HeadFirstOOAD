@@ -24,7 +24,7 @@ namespace ServicesClasses
         public AuthService(IUsersOperations usersOperations)
         {
             _usersOperations = usersOperations;
-            _jwt = this.xyz(); 
+            _jwt = this.generateJWTObject(); 
 
         }
         public async Task<UsersDataModel> GetTokenAsync(UsersDataModel model)
@@ -40,7 +40,7 @@ namespace ServicesClasses
                 return model;
             }
 
-            var jwtSecurityToken = await CreateJwtToken(users[0]);
+            var jwtSecurityToken =  CreateJwtToken(users[0]);
           
 
             model.IsAuthenticated = true;
@@ -52,7 +52,7 @@ namespace ServicesClasses
             return model;
         }
 
-        private async Task<JwtSecurityToken> CreateJwtToken(UsersDataModel user)
+        private JwtSecurityToken CreateJwtToken(UsersDataModel user)
         {
           
             var roleClaims = new List<Claim>();
@@ -79,7 +79,7 @@ namespace ServicesClasses
 
             return jwtSecurityToken;
         }
-        private JWT xyz()
+        private JWT generateJWTObject()
         {
             var configurationBuilder = new ConfigurationBuilder();
             var path = Path.Combine(Directory.GetCurrentDirectory(), "appsettings.json");
