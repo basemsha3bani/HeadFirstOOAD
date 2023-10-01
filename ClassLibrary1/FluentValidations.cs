@@ -1,5 +1,4 @@
-﻿using DataModel;
-
+﻿
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Routing;
@@ -7,6 +6,7 @@ using System;
 using System.IO;
 using Utils.Enums;
 using Utils.Enums.Classes;
+using ViewModel;
 
 namespace Validations
 {
@@ -14,7 +14,7 @@ namespace Validations
     
         
 
-        public class GuitarValidator : AbstractValidator<GuitarDataModel>
+        public class GuitarValidator : AbstractValidator<GuitarViewModel>
         {
             private string Keyvalue = string.Empty;
         private EnumMapper _enumMapper;
@@ -35,7 +35,10 @@ namespace Validations
 
             private bool StringValueMustBeEnum(string value, Type EnumType)
             {
-             
+                if(value=="")
+            {
+                return true;
+            }
                 return _enumMapper.valueToEnum(value, EnumType) != null;
             }
         }

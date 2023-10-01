@@ -9,74 +9,74 @@ using System.Threading.Tasks;
 
 namespace DataRepository.GateWay
 {
-   internal class ContextGateway<TModelRepository> where TModelRepository : class
+   public class ContextGateway<Repository> where Repository:class
     {
-        private static DbConext dbConext;
+        private static DbContext context;
 
-        internal static void GetContextInstance()
+        public static void SetContextInstance(DbContext dbContext)
         {
-            if (dbConext == null)
+            if (context == null)
             {
-                dbConext = new DbConext();
+                context = dbContext;
             }
            //return dbConext;
         }
 
         private ContextGateway() { }
 
-        internal async static Task  Add(IRepository repository) 
+        public async static Task  Add(IRepository repository) 
         {
-            dbConext.Entry(repository).State = EntityState.Added;
+            context.Entry(repository).State = EntityState.Added;
 
-           await dbConext.SaveChangesAsync();
+           await context.SaveChangesAsync();
         }
-        internal async static Task  Edit(IRepository repository)
+        public async static Task  Edit(IRepository repository)
         {
 
-            dbConext.Entry(repository).State = EntityState.Modified;
+            context.Entry(repository).State = EntityState.Modified;
 
-          await  dbConext.SaveChangesAsync();
+          await  context.SaveChangesAsync();
 
-
-
-        }
-
-
-
-        internal async static Task  Edit(IRepository repository, IRepository withnewvalues)
-        {
-            dbConext.Entry(repository).State = EntityState.Detached;
-
-            dbConext.Entry(withnewvalues).State = EntityState.Modified;
-            await dbConext.SaveChangesAsync();
-
-        }
-
-        internal async static Task Delete(IRepository repository)
-        {
-            dbConext.Entry(repository).State = EntityState.Deleted;
-
-            await dbConext.SaveChangesAsync();
-        }
-
-        internal async static Task<TModelRepository> GetById(Expression<Func<TModelRepository, bool>> predicate)
-        {
-            return dbConext.Set<TModelRepository>().AsNoTracking().Where(predicate).FirstOrDefault();
 
 
         }
 
-        internal async static Task<List<TModelRepository>> List(Expression<Func<TModelRepository, bool>> predicate = null, params Expression<Func<TModelRepository, object>>[] includeProperties)
-        {
 
+
+        public async static Task  Edit(IRepository repository, IRepository withnewvalues)
+        {
+            context.Entry(repository).State = EntityState.Detached;
+
+            context.Entry(withnewvalues).State = EntityState.Modified;
+            await context.SaveChangesAsync();
+
+        }
+
+        public async static Task Delete(IRepository repository)
+        {
+            context.Entry(repository).State = EntityState.Deleted;
+
+            await context.SaveChangesAsync();
+        }
+
+        public async static Task<Repository> GetById(Expression<Func<Repository, bool>> predicate) 
+        {
+            return context.Set<Repository>().AsNoTracking().Where(predicate).FirstOrDefault();
+
+
+        }
+     
+        public async static Task<List<Repository>> List(Expression<Func<Repository, bool>> predicate = null, params Expression<Func<Repository, object>>[] includeProperties)
+        {
+            
             if (predicate == null)
             {
                 return await (includeProperties.Aggregate
-             (dbConext.Set<TModelRepository>(), (current, includeProperty) => (DbSet<TModelRepository>)current.Include(includeProperty)).ToListAsync());
+             (context.Set<Repository>(), (current, includeProperty) => (DbSet<Repository>)current.Include(includeProperty)).ToListAsync());
             }
 
             return  await (includeProperties.Aggregate
-               (dbConext.Set<TModelRepository>().Where(predicate), (current, includeProperty) => current.Include(includeProperty)).ToListAsync());
+               (context.Set<Repository>().Where(predicate), (current, includeProperty) => current.Include(includeProperty)).ToListAsync());
         }
         private static IDbContextTransaction _transaction;
 
@@ -84,8 +84,8 @@ namespace DataRepository.GateWay
 
         public static void CreateDatabaseTransaction()
         {
-            GetContextInstance();
-            _transaction = dbConext.Database.BeginTransaction();
+            
+            _transaction = context.Database.BeginTransaction();
         }
 
 

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace DataRepository.ModelMapper.Interface
 {
-    interface IModelMapper<T> where T:class
+    public interface IModelMapper<T> where T:class
     {
          T Map(IRepository repository);
     }

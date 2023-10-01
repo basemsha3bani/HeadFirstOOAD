@@ -1,8 +1,10 @@
-﻿using DataModel;
-using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
-using DataRepository.DataRepositoryEntities.Security;
+﻿using ViewModel;
+using DataRepository;
+
 using DataRepository.GateWay;
 using DataRepository.ModelMapper.Interface;
+using Domain.Entities.Operations.Interfaces;
+using Domain.Entities.Schema.Security;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,17 +12,20 @@ using System.Text;
 using System.Threading.Tasks;
 using Utils.Enums;
 using Utils.Enums.Classes;
+using ViewModel;
+using Domain.Entities.Operations.Base;
 
-namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
+namespace  Domain.Entities.Operations.Implemenation
 {
-    public class UsersOperations : IUsersOperations, IModelMapper<UsersDataModel>
+    public class UsersOperations : BaseDomainOperations, IUsersOperations, IModelMapper<UsersViewModel>
     {
 
         private EnumMapper _enumMapper;
         public UsersOperations(EnumMapper enumMapper)
         {
             _enumMapper = enumMapper;
-            ContextGateway<Users>.GetContextInstance();
+            ContextGateway<Users>.SetContextInstance(conext);
+
         }
       
 
@@ -30,12 +35,13 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
 
      
 
-        public async Task<List<UsersDataModel>> CheckPasswordAsync(UsersDataModel SearchCriteria=null)
+
+        public async Task<List<UsersViewModel>> CheckPasswordAsync(UsersViewModel SearchCriteria=null)
         {
             if (SearchCriteria == null)
             {
-                List<UsersDataModel> _listOfUsers = (await ContextGateway<Users>.List()).Select
-                     (Users => new UsersDataModel 
+                List<UsersViewModel> _listOfUsers = (await ContextGateway<Users>.List()).Select
+                     (Users => new UsersViewModel 
                      {
                             UserName = Users.UserName, 
                             Password = Users.Password, 
@@ -45,7 +51,7 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
                 return _listOfUsers;
             }
             
-                List<UsersDataModel> listOfUsers = (from Users in
+                List<UsersViewModel> listOfUsers = (from Users in
                                                       await ContextGateway<Users>.List(
                                                                  x =>   (x.UserName.ToLower() == SearchCriteria.UserName.ToLower())
                                                                         && (x.Password.ToLower() == SearchCriteria.Password.ToLower())
@@ -55,7 +61,7 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
 
 
 
-                                           select      new UsersDataModel
+                                           select      new UsersViewModel
                      {
                                                UserName = Users.UserName,
                                                Password = Users.Password,
@@ -69,11 +75,11 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
 
         }
 
-        public UsersDataModel Map(IRepository RepoistoryObject)
+        public UsersViewModel Map(IRepository RepoistoryObject)
         {
             Users Users = (Users)RepoistoryObject;
 
-            return new UsersDataModel
+            return new UsersViewModel
             {
                 UserName = Users.UserName,
                 Password = Users.Password,
@@ -86,11 +92,7 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
 
         }
 
-       
-
-
-
-
+        
     }
     
 }

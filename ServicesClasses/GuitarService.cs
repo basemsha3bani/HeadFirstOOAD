@@ -1,10 +1,11 @@
-﻿using DataModel;
-using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
+﻿using ViewModel;
+
 using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
 using Validations;
+using Domain.Entities.Operations.Interfaces;
 
 namespace ServicesClasses
 {
@@ -18,7 +19,7 @@ namespace ServicesClasses
         _GuitarOperations = GuitarOperations;
         _GuitarValidator = GuitarValidator;
     }
-    public async Task Add(GuitarDataModel Guitar)
+    public async Task Add(GuitarViewModel Guitar)
     {
             var validationResult = _GuitarValidator.Validate(Guitar);
             if(!validationResult.IsValid)
@@ -33,18 +34,18 @@ namespace ServicesClasses
         _GuitarOperations.Delete(id);
     }
 
-    public async Task Edit(GuitarDataModel model)
+    public async Task Edit(GuitarViewModel model)
     {
       await  _GuitarOperations.Edit(model);
     }
 
-    public async Task< GuitarDataModel> GetById(int id)
+    public async Task< GuitarViewModel> GetById(int id)
     {
         return await _GuitarOperations.GetById(id);
 
     }
 
-    public async Task<List<GuitarDataModel>> list(GuitarDataModel SearchCriteria= null)
+    public async Task<List<GuitarViewModel>> list(GuitarViewModel SearchCriteria= null)
     {
         return await _GuitarOperations.list(SearchCriteria);
     }

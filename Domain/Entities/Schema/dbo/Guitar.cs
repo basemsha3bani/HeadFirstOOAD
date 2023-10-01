@@ -1,10 +1,11 @@
-﻿using System;
+﻿using DataRepository;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataRepository.DataRepositoryEntities
+namespace Domain.Entities.Schema.dbo
 {
-    public class Guitar:IRepository
+   public class Guitar : IRepository
     {
         #region Fields
 

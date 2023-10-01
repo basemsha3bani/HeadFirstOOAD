@@ -1,6 +1,5 @@
-﻿using DataModel;
-using DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses;
-using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
+﻿using ViewModel;
+using Domain.Entities.Operations.Interfaces;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
@@ -14,6 +13,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Utils;
 
 namespace ServicesClasses
 {
@@ -27,12 +27,12 @@ namespace ServicesClasses
             _jwt = this.generateJWTObject(); 
 
         }
-        public async Task<UsersDataModel> GetTokenAsync(UsersDataModel model)
+        public async Task<UsersViewModel> GetTokenAsync(UsersViewModel model)
         {
 
 
 
-            List < UsersDataModel> users = await _usersOperations.CheckPasswordAsync(model);
+            List < UsersViewModel> users = await _usersOperations.CheckPasswordAsync(model);
 
             if (users.Count==0)
             {
@@ -52,7 +52,7 @@ namespace ServicesClasses
             return model;
         }
 
-        private JwtSecurityToken CreateJwtToken(UsersDataModel user)
+        private JwtSecurityToken CreateJwtToken(UsersViewModel user)
         {
           
             var roleClaims = new List<Claim>();

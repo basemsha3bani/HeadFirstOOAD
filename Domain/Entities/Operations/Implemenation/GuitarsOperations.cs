@@ -1,7 +1,9 @@
-﻿using DataModel;
-using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
+﻿using ViewModel;
+using DataRepository;
+
 using DataRepository.GateWay;
 using DataRepository.ModelMapper.Interface;
+using Domain.Entities.Operations.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,19 +11,22 @@ using System.Text;
 using System.Threading.Tasks;
 using Utils.Enums;
 using Utils.Enums.Classes;
+using Domain.Entities.Schema.dbo;
+using Domain.Entities.Operations.Base;
 
-namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
+namespace  Domain.Entities.Operations.Implemenation
 {
-    public class GuitarOperations : IGuitarOperations, IModelMapper<GuitarDataModel>
+    public class GuitarOperations : BaseDomainOperations,IGuitarOperations, IModelMapper<GuitarViewModel>
     {
 
         private EnumMapper _enumMapper;
         public GuitarOperations(EnumMapper enumMapper)
         {
+            ContextGateway<Guitar>.SetContextInstance(conext);
             _enumMapper = enumMapper;
-            ContextGateway<Guitar>.GetContextInstance();
+            
         }
-        public async Task Add(GuitarDataModel Guitar)
+        public async Task Add(GuitarViewModel Guitar)
         {
             Guitar GuitarInstance = new Guitar {
                 backWood = Guitar.backWood,
@@ -46,7 +51,7 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
             await ContextGateway<Guitar>.Delete(GuitarInstance);
         }
 
-        public async Task Edit(GuitarDataModel Guitar)
+        public async Task Edit(GuitarViewModel Guitar)
         {
             Guitar guitarNew= new Guitar
             {
@@ -62,22 +67,22 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
             await ContextGateway<Guitar>.Edit(GuitarOld, guitarNew);
         }
 
-        public async Task<GuitarDataModel> GetById(int id)
+        public async Task<GuitarViewModel> GetById(int id)
         {
             Guitar GuitarInstance = new Guitar();
             GuitarInstance = new Guitar();
             GuitarInstance = await ContextGateway<Guitar>.GetById(g => g.serialNumber == id.ToString());
-            return (GuitarDataModel)this.Map(GuitarInstance);
+            return (GuitarViewModel)this.Map(GuitarInstance);
 
             
         }
 
-        public async Task<List<GuitarDataModel>> list(GuitarDataModel SearchCriteria=null)
+        public async Task<List<GuitarViewModel>> list(GuitarViewModel SearchCriteria=null)
         {
             if (SearchCriteria == null)
             {
-                List<GuitarDataModel> _listOfGuitar = (await ContextGateway<Guitar>.List()).Select
-                     (guitar => new GuitarDataModel 
+                List<GuitarViewModel> _listOfGuitar = (await ContextGateway<Guitar>.List()).Select
+                     (guitar => new GuitarViewModel 
                      {
                             backWood = guitar.backWood, 
                             builder = guitar.builder, 
@@ -89,7 +94,7 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
                 return _listOfGuitar;
             }
             
-                List<GuitarDataModel> listOfGuitar = (from guitar in
+                List<GuitarViewModel> listOfGuitar = (from guitar in
                                                       await ContextGateway<Guitar>.List(
                                                                  x =>
                                                                  (x.backWood ==_enumMapper.valueToEnum( SearchCriteria.backWood,typeof(Wood))
@@ -111,7 +116,7 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
 
 
 
-                                           select      new GuitarDataModel
+                                           select      new GuitarViewModel
                      {
                 backWood = guitar.backWood, 
                             builder = guitar.builder, 
@@ -126,11 +131,11 @@ namespace DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsCl
 
         }
 
-        public GuitarDataModel Map(IRepository RepoistoryObject)
+        public GuitarViewModel Map(IRepository RepoistoryObject)
         {
             Guitar guitar = (Guitar)RepoistoryObject;
 
-            return new GuitarDataModel
+            return new GuitarViewModel
             {
                 backWood = _enumMapper.valueToEnum(guitar.backWood, typeof(Wood)),
                 builder = _enumMapper.valueToEnum(guitar.builder, typeof(Builder)),

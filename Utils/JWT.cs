@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataModel
+namespace Utils
 {
     public class JWT
     {
@@ -12,3 +12,4 @@ namespace DataModel
         public double DurationInDays { get; set; }
     }
 }
+

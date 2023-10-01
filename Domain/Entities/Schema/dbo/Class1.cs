@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataRepository
+namespace Domain.Entities.Schema.dbo
 {
-   public abstract class IRepository
+    class Class1
     {
     }
 }

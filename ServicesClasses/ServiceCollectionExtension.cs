@@ -1,7 +1,6 @@
-﻿using DataModel;
+﻿using ViewModel;
 using DataRepository;
-using DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses;
-using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
+using Domain;
 using Microsoft.Extensions.DependencyInjection;
 using ServicesClasses.Interfaces;
 using System;
@@ -18,7 +17,7 @@ namespace ServicesClasses
             services.AddScoped<IAuthService, AuthService>();
            
 
-            services.AddServicesOnWhichDataRepositoryDepend().AddValidationServices(); ;
+            services.AddServicesOnWhicDomainDepends().AddValidationServices(); ;
             return services;
         }
 

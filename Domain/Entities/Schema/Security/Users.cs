@@ -1,10 +1,11 @@
-﻿using System;
+﻿using DataRepository;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace DataRepository.DataRepositoryEntities.Security
+namespace Domain.Entities.Schema.Security
 {
-    public class Users:IRepository
+   public class Users:IRepository
     {
         public int Id { get; set; }
 

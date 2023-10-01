@@ -1,4 +1,4 @@
-﻿using DataModel;
+﻿using ViewModel;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -8,6 +8,6 @@ namespace ServicesClasses.Interfaces
 {
     public interface IAuthService
     {
-        Task<UsersDataModel> GetTokenAsync(UsersDataModel model);
+        Task<UsersViewModel> GetTokenAsync(UsersViewModel model);
     }
 }
