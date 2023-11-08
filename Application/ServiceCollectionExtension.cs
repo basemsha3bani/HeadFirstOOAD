@@ -18,9 +18,10 @@ namespace ServicesClasses
             services.AddScoped<EnumMapper>();
             services.AddScoped<IGuitarOperations, GuitarOperations>();
             services.AddScoped<IUsersOperations, UsersOperations>();
-           
+            services.AddServicesOnWhichDataRepositoryDepend();
 
-            
+
+
             return services;
         }
 

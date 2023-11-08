@@ -1,7 +1,8 @@
 ﻿
 using Domain.Configuration;
-using Domain.DomainEntities;
-using Domain.DomainEntities.Security;
+
+using Domain.Entities.Schema.dbo;
+using Domain.Entities.Schema.Security;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -17,10 +18,9 @@ namespace DataRepository.GateWay
     {
 
 
-        public AppDbContext(DbContextOptions<AppDbContext> options)
-           : base(options)
+        public AppDbContext()
         {
-            //Dictionary<string, string> MigrationsSQL = this.GetAllMigrationsSQL();
+            
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

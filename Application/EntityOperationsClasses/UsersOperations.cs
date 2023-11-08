@@ -2,9 +2,9 @@
 using Application.EntityOperationsInterface;
 using DataRepository.GateWay;
 using DataRepository.ModelMapper.Interface;
-using Domain.DomainEntities.Security;
-using Domain.Entities;
 
+using Domain.Entities;
+using Domain.Entities.Schema.Security;
 using Domain.ViewModel;
 using System;
 using System.Collections.Generic;

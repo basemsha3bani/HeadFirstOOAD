@@ -19,7 +19,7 @@ namespace ServicesClasses
             services.AddScoped<IGuitarServices, GuitarService>();
 
 
-            services.AddServicesOnWhichApplicationDepends().AddServicesOnWhichDataRepositoryDepend().AddValidationServices(); ;
+            services.AddServicesOnWhichApplicationDepends().AddValidationServices(); ;
             return services;
         }
 

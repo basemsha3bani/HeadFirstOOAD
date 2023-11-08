@@ -1,4 +1,5 @@
-﻿using Domain.DomainEntities;
+﻿
+using Domain.Entities.Schema.dbo;
 using Microsoft.EntityFrameworkCore;
 
 namespace DataRepository.GateWay
