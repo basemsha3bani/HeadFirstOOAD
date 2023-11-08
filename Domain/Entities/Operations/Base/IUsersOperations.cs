@@ -1,11 +1,10 @@
-﻿using ViewModel;
-using Domain.ViewModel;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Threading.Tasks;
+using ViewModel;
 
-namespace Application.EntityOperationsInterface
+namespace Domain.Entities.Operations.Interfaces
 {
     public interface IUsersOperations
     {
