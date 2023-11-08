@@ -10,8 +10,7 @@ namespace Utils.Enums
         Martin,
         Gibson,
         Collings,
-        Olson,
-        Ryan,
+        Olson,            
         PRS,
         Any
     }

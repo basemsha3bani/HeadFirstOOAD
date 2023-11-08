@@ -1,7 +1,7 @@
-﻿using DataModel;
+﻿
+using Application;
 using DataRepository;
-using DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses;
-using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
+
 using Microsoft.Extensions.DependencyInjection;
 using ServicesClasses.Interfaces;
 using System;
@@ -16,9 +16,10 @@ namespace ServicesClasses
 
         
             services.AddScoped<IAuthService, AuthService>();
-           
+            services.AddScoped<IGuitarServices, GuitarService>();
 
-            services.AddServicesOnWhichDataRepositoryDepend().AddValidationServices(); ;
+
+            services.AddServicesOnWhichApplicationDepends().AddServicesOnWhichDataRepositoryDepend().AddValidationServices(); ;
             return services;
         }
 

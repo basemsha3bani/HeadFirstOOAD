@@ -33,7 +33,7 @@ namespace HeadFirstOOAD
         {
             services.Configure<JWT>(Configuration.GetSection("JWT"));
             services.AddControllers();
-            services.AddScoped<GuitarService>();
+          
            services.AddAuthentication(options=>
            {
                options.DefaultAuthenticateScheme=JwtBearerDefaults.AuthenticationScheme;

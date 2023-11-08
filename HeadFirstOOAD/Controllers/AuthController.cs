@@ -1,4 +1,5 @@
-﻿using DataModel;
+﻿
+using Domain.ViewModel;
 using Microsoft.AspNetCore.Mvc;
 using ServicesClasses.Interfaces;
 using System.Threading.Tasks;
@@ -19,7 +20,7 @@ namespace HeadFirstOOAD.Controllers
       
 
         [HttpPost("token")]
-        public async Task<IActionResult> GetTokenAsync([FromBody] UsersDataModel model)
+        public async Task<IActionResult> GetTokenAsync([FromBody] UsersViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);

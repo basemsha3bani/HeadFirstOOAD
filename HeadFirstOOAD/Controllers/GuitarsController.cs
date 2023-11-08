@@ -5,10 +5,12 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using DataModel;
+
 using ServicesClasses;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
+using Domain.ViewModel;
+using Application;
 
 namespace HeadFirstOOAD.Controllers
 {
@@ -17,9 +19,9 @@ namespace HeadFirstOOAD.Controllers
     [ApiController]
     public class GuitarsController : ControllerBase
     {
-        private readonly GuitarService _GuitarService;
+        private readonly IGuitarServices _GuitarService;
 
-        public GuitarsController(GuitarService GuitarService)
+        public GuitarsController(IGuitarServices GuitarService)
         {
             _GuitarService = GuitarService;
         }
@@ -27,32 +29,32 @@ namespace HeadFirstOOAD.Controllers
         // GET: api/Guitars
         [HttpPost]
         [Route("GetGuitars")]
-        public async Task<ActionResult<IEnumerable<GuitarDataModel>>> GetGuitars([FromBody] GuitarDataModel SearchCriteria=null)
+        public async Task<ActionResult<IEnumerable<GuitarViewModel>>> GetGuitars([FromBody] GuitarViewModel SearchCriteria=null)
         {
             return await _GuitarService.list(SearchCriteria);
         }
 
         // GET: api/Guitars/5
         //[HttpGet("{id}")]
-        //public async Task<ActionResult<GuitarDataModel>> GetGuitarDataModel(string id)
+        //public async Task<ActionResult<GuitarViewModel>> GetGuitarViewModel(string id)
         //{
-        //    var GuitarDataModel = await _GuitarService.GetById(int.Parse(id));
+        //    var GuitarViewModel = await _GuitarService.GetById(int.Parse(id));
 
-        //    if (GuitarDataModel == null)
+        //    if (GuitarViewModel == null)
         //    {
         //        return NotFound();
         //    }
 
-        //    return GuitarDataModel;
+        //    return GuitarViewModel;
         //}
 
         // PUT: api/Guitars/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutGuitarDataModel(string id, GuitarDataModel GuitarDataModel)
+        public async Task<IActionResult> PutGuitarViewModel(string id, GuitarViewModel GuitarViewModel)
         {
-            if (id != GuitarDataModel.serialNumber)
+            if (id != GuitarViewModel.serialNumber)
             {
                 return BadRequest();
             }
@@ -62,11 +64,11 @@ namespace HeadFirstOOAD.Controllers
             try
             {
                
-                await _GuitarService.Edit(GuitarDataModel);
+                await _GuitarService.Edit(GuitarViewModel);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GuitarDataModelExists(id))
+                if (!GuitarViewModelExists(id))
                 {
                     return NotFound();
                 }
@@ -85,12 +87,12 @@ namespace HeadFirstOOAD.Controllers
         [Authorize(Roles = "admin")]
         [HttpPost]
         [Route("PostGuitar")]
-        public async Task<ActionResult> PostGuitarDataModel(GuitarDataModel GuitarDataModel)
+        public async Task<ActionResult> PostGuitarViewModel(GuitarViewModel GuitarViewModel)
         {
            
             try
             {
-                await _GuitarService.Add(GuitarDataModel);
+                await _GuitarService.Add(GuitarViewModel);
             }
             catch (Exception ex)
             {
@@ -102,14 +104,14 @@ namespace HeadFirstOOAD.Controllers
 
         // DELETE: api/Guitars/5
         [HttpDelete("{id}")]
-        public async Task<ActionResult<GuitarDataModel>> DeleteGuitarDataModel(string id)
+        public async Task<ActionResult<GuitarViewModel>> DeleteGuitarViewModel(string id)
         {
             await _GuitarService.Delete(int.Parse(id));
             return Ok();
 
         }
 
-        private bool GuitarDataModelExists(string id)
+        private bool GuitarViewModelExists(string id)
         {
             return _GuitarService.GetById(int.Parse(id)) != null ;
         }

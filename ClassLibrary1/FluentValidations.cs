@@ -1,5 +1,5 @@
-﻿using DataModel;
-
+﻿
+using Domain.ViewModel;
 using FluentValidation;
 using FluentValidation.Results;
 using Microsoft.AspNetCore.Routing;
@@ -14,7 +14,7 @@ namespace Validations
     
         
 
-        public class GuitarValidator : AbstractValidator<GuitarDataModel>
+        public class GuitarValidator : AbstractValidator<GuitarViewModel>
         {
             private string Keyvalue = string.Empty;
         private EnumMapper _enumMapper;

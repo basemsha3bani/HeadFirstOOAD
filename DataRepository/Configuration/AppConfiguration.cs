@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 
-namespace DataRepository.Configuration
+namespace Domain.Configuration
 {
     public class AppConfiguration
     {

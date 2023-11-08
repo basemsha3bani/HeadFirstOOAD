@@ -1,6 +1,9 @@
-﻿using DataRepository.DataRepositoryEntities.DataRepositoryEntityOperationsClasses;
-using DataRepository.DataRepositoryEntities.DataRepositoryOperationsInterface;
-using FluentValidation.AspNetCore;
+﻿
+
+using DataRepository.GateWay;
+using Domain.DomainEntities;
+using Domain.DomainEntities.Security;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using System;
 using System.Collections.Generic;
@@ -16,9 +19,10 @@ namespace DataRepository
         public static IServiceCollection AddServicesOnWhichDataRepositoryDepend(this IServiceCollection services)
         {
 
-            services.AddScoped<EnumMapper>();
-            services.AddScoped<IGuitarOperations, GuitarOperations>();
-            services.AddScoped<IUsersOperations, UsersOperations>();
+            services.AddDbContext<AppDbContext>();
+            services.AddScoped<IContextGateway<Guitar>, ContextGateway<Guitar>>();
+            services.AddScoped<IContextGateway<Users>, ContextGateway<Users>>();
+           
 
 
             return services;
