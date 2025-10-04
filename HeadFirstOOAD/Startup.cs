@@ -57,7 +57,10 @@ namespace HeadFirstOOAD
             }           );
            
            
-            services.AddServicesOnWhichServiceClassLibaryDepend();
+            services.AddServicesOnWhichApplicationDepends();
+            services.AddServicesOnWhichDataRepositoryDepend();
+            
+        
             //services.AddCors();
         }
 

@@ -1,7 +1,8 @@
-﻿
-using Domain.ViewModel;
+﻿using Application1.Features.Users.Queries;
+using Application1.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
-using ServicesClasses.Interfaces;
 using System.Threading.Tasks;
 
 namespace HeadFirstOOAD.Controllers
@@ -10,41 +11,25 @@ namespace HeadFirstOOAD.Controllers
     [ApiController]
     public class AuthController : ControllerBase
     {
-        private readonly IAuthService _authService;
-
-        public AuthController(IAuthService authService)
+        IMediator  _mediator;
+        public AuthController(IMediator mediator)
         {
-            _authService = authService;
+            _mediator = mediator;   
         }
-
-      
 
         [HttpPost("token")]
         public async Task<IActionResult> GetTokenAsync([FromBody] UsersViewModel model)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-
-            var result = await _authService.GetTokenAsync(model);
+           
+            GetUserByIdQuery getUserByIdQuery = new GetUserByIdQuery(model);
+            var result = await _mediator.Send(getUserByIdQuery);
 
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);
 
             return Ok(result);
         }
-
-        //[HttpPost("addrole")]
-        //public async Task<IActionResult> AddRoleAsync([FromBody] AddRoleModel model)
-        //{
-        //    if (!ModelState.IsValid)
-        //        return BadRequest(ModelState);
-
-        //    var result = await _authService.AddRoleAsync(model);
-
-        //    if (!string.IsNullOrEmpty(result))
-        //        return BadRequest(result);
-
-        //    return Ok(model);
-        //}
     }
 }

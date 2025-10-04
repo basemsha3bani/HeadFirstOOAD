@@ -9,8 +9,16 @@ using Microsoft.EntityFrameworkCore;
 using ServicesClasses;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Authorization;
-using Domain.ViewModel;
+
 using Application;
+
+
+using MediatR;
+using Application1.Features.Guitars.Queries;
+using Application1.ViewModels;
+using Application1.Features.Guitars.Commands.Handlers;
+using Application1.Features.Guitars.Commands;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HeadFirstOOAD.Controllers
 {
@@ -19,11 +27,11 @@ namespace HeadFirstOOAD.Controllers
     [ApiController]
     public class GuitarsController : ControllerBase
     {
-        private readonly IGuitarServices _GuitarService;
+        private readonly IMediator _mediator;
 
-        public GuitarsController(IGuitarServices GuitarService)
+        public GuitarsController(IMediator mediator)
         {
-            _GuitarService = GuitarService;
+            _mediator = mediator;
         }
 
         // GET: api/Guitars
@@ -31,22 +39,12 @@ namespace HeadFirstOOAD.Controllers
         [Route("GetGuitars")]
         public async Task<ActionResult<IEnumerable<GuitarViewModel>>> GetGuitars([FromBody] GuitarViewModel SearchCriteria=null)
         {
-            return await _GuitarService.list(SearchCriteria);
+            var query = new ListGuitarsQuery(SearchCriteria);
+            var orders = await _mediator.Send(query);
+            return Ok(orders);
         }
 
-        // GET: api/Guitars/5
-        //[HttpGet("{id}")]
-        //public async Task<ActionResult<GuitarViewModel>> GetGuitarViewModel(string id)
-        //{
-        //    var GuitarViewModel = await _GuitarService.GetById(int.Parse(id));
-
-        //    if (GuitarViewModel == null)
-        //    {
-        //        return NotFound();
-        //    }
-
-        //    return GuitarViewModel;
-        //}
+       
 
         // PUT: api/Guitars/5
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
@@ -63,12 +61,13 @@ namespace HeadFirstOOAD.Controllers
 
             try
             {
+                UpdateGuitarCommand updateGuitarCommand = (UpdateGuitarCommand)GuitarViewModel;
                
-                await _GuitarService.Edit(GuitarViewModel);
+                await _mediator.Send(updateGuitarCommand);
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!GuitarViewModelExists(id))
+                if (!await GuitarViewModelExists(id))
                 {
                     return NotFound();
                 }
@@ -92,7 +91,10 @@ namespace HeadFirstOOAD.Controllers
            
             try
             {
-                await _GuitarService.Add(GuitarViewModel);
+                AddGuitarCommand addGuitarCommand = (AddGuitarCommand)GuitarViewModel;
+
+                await _mediator.Send(addGuitarCommand);
+               
             }
             catch (Exception ex)
             {
@@ -106,14 +108,19 @@ namespace HeadFirstOOAD.Controllers
         [HttpDelete("{id}")]
         public async Task<ActionResult<GuitarViewModel>> DeleteGuitarViewModel(string id)
         {
-            await _GuitarService.Delete(int.Parse(id));
+           
+            DeleteGuitarCommand deleteGuitarCommand = new DeleteGuitarCommand { serialNumber=id};
+            var orders = await _mediator.Send(deleteGuitarCommand);
+            
             return Ok();
 
         }
 
-        private bool GuitarViewModelExists(string id)
+        private async Task<bool> GuitarViewModelExists(string id)
         {
-            return _GuitarService.GetById(int.Parse(id)) != null ;
+            var query = new GetGuitarByIdQuery(new GuitarViewModel { serialNumber=id});
+            var orders = await _mediator.Send(query);
+            return orders != null;
         }
     }
 }
