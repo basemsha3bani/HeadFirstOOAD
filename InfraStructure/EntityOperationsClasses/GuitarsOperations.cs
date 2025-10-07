@@ -35,7 +35,7 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
 
         public async Task Add(GuitarViewModel Guitar)
         {
-            Guitar GuitarInstance =(Guitar) this.Map(Guitar);
+            Guitar GuitarInstance =(Guitar) this.MapToModel(Guitar);
 
 
             await _GuitarRepositry.Add(GuitarInstance);
@@ -82,7 +82,7 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
             Guitar GuitarInstance = new Guitar();
             GuitarInstance = new Guitar();
             GuitarInstance = await _GuitarRepositry.GetById(g => g.serialNumber == id.ToString());
-            return (GuitarViewModel)this.Map(GuitarInstance);
+            return (GuitarViewModel)this.MapToViewModel(GuitarInstance);
 
 
         }
@@ -145,7 +145,7 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
 
        
 
-        public GenericViewModel Map(Guitar guitar)
+        public GenericViewModel MapToViewModel(Guitar guitar)
         {
             return new GuitarViewModel
             {
@@ -160,7 +160,7 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
             };
         }
 
-        public Model Map(GuitarViewModel model)
+        public Model MapToModel(GuitarViewModel model)
         {
             return new Guitar
             {

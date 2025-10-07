@@ -10,6 +10,6 @@ namespace Application1.Mapping.ModelMappingInterface
 {
     public interface IViewModelMapper<T> where T : Model
     {
-        GenericViewModel Map(T model);
+        GenericViewModel MapToViewModel(T model);
     }
 }

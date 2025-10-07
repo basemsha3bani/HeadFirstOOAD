@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HeadFirstOOAD.Helpers;
+using MassTransit;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -59,8 +60,24 @@ namespace HeadFirstOOAD
            
             services.AddServicesOnWhichApplicationDepends();
             services.AddServicesOnWhichDataRepositoryDepend();
-            
-        
+            services.AddMassTransit(config =>
+            {
+
+               
+
+                config.UsingRabbitMq((ctx, cfg) =>
+                {
+                    cfg.Host(Configuration["EventBusSettings:Uri"]);
+                    cfg.UseHealthCheck(ctx);
+
+                    cfg.ReceiveEndpoint(Utils.Events.EventBusConstants.UserLoginQueue.Queue, c =>
+                    {
+                        
+                    });
+                });
+            });
+            services.AddMassTransitHostedService();
+
             //services.AddCors();
         }
 

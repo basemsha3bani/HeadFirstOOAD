@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace Application1.Features.Guitars.Commands.Handlers
 {
-    internal class CreateGuitarCommandHandler : IRequestHandler<GuitarViewModel>
+    internal class EditGuitarCommandHandler : IRequestHandler<GuitarViewModel>
     {
         IGuitarOperations _guitarOperations;
         
 
-        public CreateGuitarCommandHandler(IGuitarOperations guitarOperations)
+        public EditGuitarCommandHandler(IGuitarOperations guitarOperations)
         {
             _guitarOperations = guitarOperations;
            

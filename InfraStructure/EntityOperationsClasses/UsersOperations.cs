@@ -54,7 +54,7 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
                                                 select user
                                                  
                                                 ).FirstOrDefault();
-            return (UsersViewModel) this.Map(Users);
+            return (UsersViewModel) this.MapToViewModel(Users);
 
             // return null;
 
@@ -62,7 +62,7 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
 
 
 
-        public GenericViewModel Map(Users RepoistoryObject)
+        public GenericViewModel MapToViewModel(Users RepoistoryObject)
         {
             if(RepoistoryObject==null)
             {

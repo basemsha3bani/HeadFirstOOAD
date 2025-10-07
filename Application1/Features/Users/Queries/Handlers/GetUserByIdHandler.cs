@@ -30,7 +30,8 @@ namespace Application1.Features.Users.Queries.Handlers
         {
             //var User = await _UserOperations.CheckPasswordAsync(request.searchCriteria);
             return new UsersViewModel { UserName = request.searchCriteria.UserName,IsAuthenticated=true };
-            UserLoginEvent @event = new UserLoginEvent { UserName = request.searchCriteria.UserName };
+           
+            
 
            // return (User??null);
         }

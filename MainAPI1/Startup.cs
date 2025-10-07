@@ -25,7 +25,7 @@ namespace LoggingAPI
 
                 config.UsingRabbitMq((ctx, cfg) =>
                 {
-                    cfg.Host(Configuration["EventBusSettings:HostAddress"]);
+                    cfg.Host(Configuration["EventBusSettings:uri"]);
                     cfg.UseHealthCheck(ctx);
 
                     cfg.ReceiveEndpoint(Utils.Events.EventBusConstants.UserLoginQueue.Queue, c =>
@@ -35,6 +35,7 @@ namespace LoggingAPI
                 });
             });
             services.AddMassTransitHostedService();
+            services.AddLogging();
 
             // General Configuration
             services.AddScoped<UserLoginEventConsumer>();

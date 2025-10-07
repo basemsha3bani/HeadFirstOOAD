@@ -23,7 +23,7 @@ namespace InfraStructure.Mapping
 
         
 
-        Model IModelMapper<GuitarViewModel>.Map(GuitarViewModel guitarViewModel)
+        Model IModelMapper<GuitarViewModel>.MapToModel(GuitarViewModel guitarViewModel)
         {
             Guitar guitarNew = new Guitar
             {

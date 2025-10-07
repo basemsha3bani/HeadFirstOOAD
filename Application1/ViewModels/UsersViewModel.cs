@@ -16,13 +16,13 @@ namespace Application1.ViewModels
         [DataType(DataType.Password)]
         public string Password { get; set; }
 
-        public string Role { get; set; }
-        public string Message { get; set; }
+        public string? Role { get; set; }
+        public string? Message { get; set; }
 
 
-        public bool IsAuthenticated { get; set; }
+        public bool IsAuthenticated { get; set; } = false;
 
-        public string Token { get; set; }
+        public string? Token { get; set; }
 
 
 
