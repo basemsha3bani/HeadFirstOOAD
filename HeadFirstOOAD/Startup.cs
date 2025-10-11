@@ -77,7 +77,7 @@ namespace HeadFirstOOAD
                 });
             });
             services.AddMassTransitHostedService();
-
+            services.AddDistributedMemoryCache();
             //services.AddCors();
         }
 

@@ -175,9 +175,11 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
             };
         }
 
-        Task<GuitarViewModel> IGuitarOperations.GetById(int id)
+       async Task<GuitarViewModel> IGuitarOperations.GetById(int id)
         {
-            throw new NotImplementedException();
+            Guitar guitar = await _GuitarRepositry.GetById(g => g.serialNumber == id.ToString());
+            return (GuitarViewModel)this.MapToViewModel(guitar);
+
         }
 
         

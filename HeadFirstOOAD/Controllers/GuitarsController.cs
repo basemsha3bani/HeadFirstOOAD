@@ -1,42 +1,69 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using Application;
+using Application1.Features.Guitars.Commands;
+using Application1.Features.Guitars.Commands.Handlers;
+using Application1.Features.Guitars.Queries;
+using Application1.ViewModels;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-
+using Microsoft.Extensions.Caching.Distributed;
+using Microsoft.Extensions.Caching.StackExchangeRedis;
+using Newtonsoft.Json;
 using ServicesClasses;
-using Microsoft.AspNetCore.Cors;
-using Microsoft.AspNetCore.Authorization;
-
-using Application;
-
-
-using MediatR;
-using Application1.Features.Guitars.Queries;
-using Application1.ViewModels;
-using Application1.Features.Guitars.Commands.Handlers;
-using Application1.Features.Guitars.Commands;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Text;
+using System.Threading.Tasks;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace HeadFirstOOAD.Controllers
 {
     [Route("api/[controller]")]
-   //[EnableCors]
+    //[EnableCors]
     [ApiController]
     public class GuitarsController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private IDistributedCache _cache;
 
-        public GuitarsController(IMediator mediator)
+        public GuitarsController(IMediator mediator,IDistributedCache cache)
         {
             _mediator = mediator;
+            _cache = cache;
         }
 
         // GET: api/Guitars
-        [HttpPost]
+        [HttpGet("{id}")]
+       
+        public async Task<ActionResult<IEnumerable<GuitarViewModel>>> GetGuitarById(string id)
+        {
+            var cachedguitar = await _cache.GetStringAsync(id);
+                if(cachedguitar != null)
+            {
+                return Ok(JsonConvert.DeserializeObject<GuitarViewModel>(cachedguitar));
+
+            }
+            if (!await GuitarViewModelExists(id))
+            {
+                return NotFound();
+            }
+            await _cache.SetStringAsync(_guitarViewModel.serialNumber, JsonConvert.SerializeObject(_guitarViewModel));
+            DateTime currentdate = DateTime.Now;
+            string time = currentdate.ToLocalTime().ToString();
+            var cacheOptions = new DistributedCacheEntryOptions
+            {
+                AbsoluteExpiration = DateTime.Now.AddMinutes(3)
+            };
+            _cache.Set("Time", Encoding.UTF8.GetBytes(time), cacheOptions);
+            return Ok(_guitarViewModel);
+        }
         [Route("GetGuitars")]
+        [HttpPost]
         public async Task<ActionResult<IEnumerable<GuitarViewModel>>> GetGuitars([FromBody] GuitarViewModel SearchCriteria=null)
         {
             var query = new ListGuitarsQuery(SearchCriteria);
@@ -115,12 +142,16 @@ namespace HeadFirstOOAD.Controllers
             return Ok();
 
         }
-
+        private GuitarViewModel _guitarViewModel;
         private async Task<bool> GuitarViewModelExists(string id)
         {
             var query = new GetGuitarByIdQuery(new GuitarViewModel { serialNumber=id});
-            var orders = await _mediator.Send(query);
-            return orders != null;
+            var guitar = await _mediator.Send(query);
+            if(guitar!=null)
+            {
+                _guitarViewModel = guitar;
+            }
+            return guitar != null;
         }
     }
 }
