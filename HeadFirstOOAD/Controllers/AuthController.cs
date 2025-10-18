@@ -33,6 +33,7 @@ namespace HeadFirstOOAD.Controllers
 
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);
+            //rabbit mq
           await  _publishEndPoint.Publish(new UserLoginEvent { UserName=model.UserName}); ;
             return Ok(result);
         }
