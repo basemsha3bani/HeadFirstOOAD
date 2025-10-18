@@ -25,6 +25,7 @@ namespace HeadFirstOOAD.Controllers
         [HttpPost("token")]
         public async Task<IActionResult> GetTokenAsync([FromBody] UsersViewModel model)
         {
+            //another comment
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
            
