@@ -3,7 +3,9 @@
 
 using Domain.Entities.Schema.dbo;
 using Domain.Entities.Schema.Security;
-using InfraStructure.Configuration;
+
+using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Migrations;
@@ -12,10 +14,11 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Threading.Tasks;
+using Utils.Configuration;
 
 namespace DataRepository.GateWay
 {
-    public class AppDbContext:DbContext
+    public class AppDbContext: IdentityDbContext<IdentityUser>
     {
 
 
@@ -40,8 +43,9 @@ namespace DataRepository.GateWay
         {
 
             modelBuilder.Entity<Guitar>().HasKey(o => o.serialNumber);
-            modelBuilder.Entity<Users>().HasKey(o => o.Id);
-          
+           base.OnModelCreating(modelBuilder);
+
+
 
         }
 
@@ -52,13 +56,15 @@ namespace DataRepository.GateWay
 
         public DbSet<Guitar> Guitars { get; set; }
 
-        public DbSet<Users> Users { get; set; }
-
-      
+        public DbSet<Users> users { get; set; }
 
 
-     
-      
+
+
+
+
+
+
 
     }
 }

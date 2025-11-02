@@ -82,7 +82,7 @@ namespace HeadFirstOOAD
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
+        public async Task Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -97,9 +97,12 @@ namespace HeadFirstOOAD
             {
                 endpoints.MapControllers();
             });
-
-//            app.UseCors(
-//options => options.AllowAnyOrigin().AllowAnyMethod());
+            using (IServiceScope scope = app.ApplicationServices.CreateScope())
+            {
+                var service = scope.ServiceProvider;
+               await service.seedRolesAndUser();
+            }
+         
 
         }
     }
