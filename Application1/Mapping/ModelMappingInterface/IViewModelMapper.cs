@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Application1.Mapping.ModelMappingInterface
 {
-    public interface IViewModelMapper<T> where T : Model
+    public interface IViewModelMapper<T> where T : class
     {
         GenericViewModel MapToViewModel(T model);
     }

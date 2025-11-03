@@ -160,7 +160,7 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
             };
         }
 
-        public Model MapToModel(GuitarViewModel model)
+        public object MapToModel(GuitarViewModel model)
         {
             return new Guitar
             {

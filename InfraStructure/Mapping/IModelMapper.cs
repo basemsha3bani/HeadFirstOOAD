@@ -10,6 +10,6 @@ namespace InfraStructure.Mapping
 {
     public interface IModelMapper<T> where T : GenericViewModel
     {
-        Model MapToModel(T model);
+        object MapToModel(T model);
     }
 }

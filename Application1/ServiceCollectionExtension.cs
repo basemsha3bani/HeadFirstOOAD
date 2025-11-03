@@ -1,5 +1,6 @@
 ﻿
 using Application;
+using Application.Features.Users;
 using Application1.Contracts;
 using Application1.Validation;
 
@@ -19,7 +20,7 @@ namespace ServicesClasses
         {
 
            services.AddScoped<EnumMapper>();
-            
+            services.AddScoped<AuthService>();
             services.AddMediatR(Assembly.GetExecutingAssembly())
                      .AddValidationServices();
 

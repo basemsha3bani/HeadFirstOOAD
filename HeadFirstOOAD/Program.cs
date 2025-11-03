@@ -85,5 +85,6 @@ internal class Program
             var service = scope.ServiceProvider;
            await service.seedRolesAndUser();
         }
+        app.Run();
     }
 }

@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
-    <TargetFramework>net7.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <UserSecretsId>c796f85b-7c7a-4494-87a9-239c84b96888</UserSecretsId>
     <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>
   </PropertyGroup>
@@ -33,7 +33,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Application1\Application1.csproj" />
+    <ProjectReference Include="..\Application1\Application.csproj" />
     <ProjectReference Include="..\InfraStructure\InfraStructure.csproj" />
     <ProjectReference Include="..\Utils\Utils.csproj" />
   </ItemGroup>

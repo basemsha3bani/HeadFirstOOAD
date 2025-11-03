@@ -28,12 +28,9 @@ namespace Application1.Features.Users.Queries.Handlers
 
         public async Task<UsersViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
         {
-            //var User = await _UserOperations.CheckPasswordAsync(request.searchCriteria);
-            return new UsersViewModel { UserName = request.searchCriteria.UserName,IsAuthenticated=true };
+            var User = await _UserOperations.CheckPasswordAsync(request.searchCriteria);
+            return User;
            
-            
-
-           // return (User??null);
         }
     }
 }

@@ -1,6 +1,7 @@
 ﻿
 
 using Application.EntityOperationsInterface;
+using Application.Features.Users;
 using Application1.Contracts;
 using Application1.Mapping.ModelMappingInterface;
 using Application1.ViewModels;
@@ -19,17 +20,19 @@ using Utils.Enums.Classes;
 
 namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
 {
-    public class UsersOperations : IUsersOperations, IViewModelMapper<Users>
+    public class UsersOperations : IUsersOperations
     {
 
         private EnumMapper _enumMapper;
-        IContextGateway<Users> _Usersepositry;
-        UserManager<Users> _userManager;
-        public UsersOperations(EnumMapper enumMapper, IContextGateway<Users> UsersRepositry,UserManager<Users> userManager)
+       
+        UserManager<IdentityUser> _userManager;
+        AuthService _authService;
+        public UsersOperations(EnumMapper enumMapper, UserManager<IdentityUser> userManager,AuthService authService)
         {
             _enumMapper = enumMapper;
-            _Usersepositry = UsersRepositry;
-            _userManager = userManager; 
+            
+            _userManager = userManager;
+            _authService = authService;
         }
 
 
@@ -40,38 +43,19 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
 
 
         public async Task<UsersViewModel> CheckPasswordAsync(UsersViewModel SearchCriteria = null)
-        {
-           
-
-            Users User = await _userManager.FindByNameAsync(SearchCriteria.UserName);
-            if (User != null && await _userManager.CheckPasswordAsync(User, SearchCriteria.Password))
-            return (UsersViewModel) this.MapToViewModel(User);
-
-             return null;
-
-        }
+                    {
 
 
+            
+                return await _authService.GetTokenAsync(SearchCriteria);
 
-        public GenericViewModel MapToViewModel(Users RepoistoryObject)
-        {
-            if(RepoistoryObject==null)
-            {
-                return null;
-            }
-            Users user = (Users)RepoistoryObject;
-
-            return new UsersViewModel
-            {
-                UserName = user.UserName,
-                
-               
-                IsAuthenticated = true,
-                Message = ""
-
-            };
+            
 
         }
+
+
+
+       
 
 
     }

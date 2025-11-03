@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Domain.Entities.Schema.dbo
 {
-    public class Guitar : Model
+    public class Guitar
     {
         #region Fields
 

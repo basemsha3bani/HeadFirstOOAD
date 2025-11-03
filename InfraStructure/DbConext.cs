@@ -56,7 +56,7 @@ namespace DataRepository.GateWay
 
         public DbSet<Guitar> Guitars { get; set; }
 
-        public DbSet<Users> users { get; set; }
+        
 
 
 
