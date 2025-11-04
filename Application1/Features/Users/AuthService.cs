@@ -15,17 +15,18 @@ using Utils;
 
 namespace Application.Features.Users
 {
-    public class AuthService
+    public class AuthService 
     {
         
         private readonly JWT _jwt;
         UserManager<IdentityUser> _userManager;
-         
-        public AuthService(UserManager<IdentityUser> userManager)
+        RoleManager<IdentityRole> _roleManager;
+        public AuthService(UserManager<IdentityUser> userManager,RoleManager<IdentityRole> roleManager)
         {
             
             _jwt = this.generateJWTObject();
             _userManager = userManager;
+            _roleManager = roleManager;
 
         }
         public async Task<UsersViewModel> GetTokenAsync(UsersViewModel model)
@@ -34,13 +35,13 @@ namespace Application.Features.Users
 
 
            var User= await _userManager.FindByNameAsync(model.UserName);
-            if (User != null && await _userManager.CheckPasswordAsync(User, model.Password))
+            if (!(User != null && await _userManager.CheckPasswordAsync(User, model.Password)))
             {
                 model.Message = "Email or Password is incorrect!";
                 return model;
             }
 
-            var jwtSecurityToken = CreateJwtToken(model);
+            var jwtSecurityToken = await CreateJwtToken(User);
 
 
             model.IsAuthenticated = true;
@@ -52,13 +53,14 @@ namespace Application.Features.Users
             return model;
         }
 
-        private JwtSecurityToken CreateJwtToken(UsersViewModel user)
+        private async Task<JwtSecurityToken> CreateJwtToken(IdentityUser user)
         {
 
             var roleClaims = new List<Claim>();
+           List<string> roles= (await _userManager.GetRolesAsync(user)).ToList();
+            
 
-
-            roleClaims.Add(new Claim("roles", user.Role));
+            roleClaims=roles.Select( s=> new Claim("roles", s)).ToList();
 
             var claims = new[]
             {

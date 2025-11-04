@@ -28,9 +28,9 @@ namespace HeadFirstOOAD.Controllers
             //another comment
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-           
-            GetUserByIdQuery getUserByIdQuery = new GetUserByIdQuery(model);
-            var result = await _mediator.Send(getUserByIdQuery);
+
+            GetUserByNameQuery getUserByNameQuery = new GetUserByNameQuery(model);
+            var result = await _mediator.Send(getUserByNameQuery);
 
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);

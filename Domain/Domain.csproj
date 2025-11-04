@@ -6,12 +6,11 @@
 
   <ItemGroup>
     <Compile Remove="Contracts\**" />
+    <Compile Remove="ViewModels\**" />
     <EmbeddedResource Remove="Contracts\**" />
+    <EmbeddedResource Remove="ViewModels\**" />
     <None Remove="Contracts\**" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="ViewModels\" />
+    <None Remove="ViewModels\**" />
   </ItemGroup>
 
   <ItemGroup>

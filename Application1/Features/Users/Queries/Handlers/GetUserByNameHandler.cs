@@ -14,19 +14,19 @@ using Utils.Events;
 
 namespace Application1.Features.Users.Queries.Handlers
 {
-    internal class GetUserByIdHandler : IRequestHandler<GetUserByIdQuery, UsersViewModel>
+    internal class GetUserByNameHandler : IRequestHandler<GetUserByNameQuery, UsersViewModel>
     {
         private readonly IUsersOperations _UserOperations;
 
 
-        public GetUserByIdHandler(IUsersOperations UserOperations)
+        public GetUserByNameHandler(IUsersOperations UserOperations)
         {
             _UserOperations = UserOperations ?? throw new ArgumentNullException(nameof(UserOperations));
         }
 
 
 
-        public async Task<UsersViewModel> Handle(GetUserByIdQuery request, CancellationToken cancellationToken)
+        public async Task<UsersViewModel> Handle(GetUserByNameQuery request, CancellationToken cancellationToken)
         {
             var User = await _UserOperations.CheckPasswordAsync(request.searchCriteria);
             return User;

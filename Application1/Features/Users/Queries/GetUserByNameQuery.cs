@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace Application1.Features.Users.Queries
 {
-    public class GetUserByIdQuery : IRequest<UsersViewModel>
+    public class GetUserByNameQuery : IRequest<UsersViewModel>
     {
-        public GetUserByIdQuery(UsersViewModel searchCriteria)
+        public GetUserByNameQuery(UsersViewModel searchCriteria)
         {
             this.searchCriteria = searchCriteria;
         }

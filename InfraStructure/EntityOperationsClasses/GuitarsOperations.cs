@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -14,6 +15,7 @@ using DataRepository.GateWay;
 using Domain.Entities;
 using Domain.Entities.Schema.dbo;
 using InfraStructure.Mapping;
+using Microsoft.EntityFrameworkCore;
 using Utils.Enums;
 using Utils.Enums.Classes;
 
@@ -42,6 +44,8 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
 
 
         }
+
+       
 
         
         

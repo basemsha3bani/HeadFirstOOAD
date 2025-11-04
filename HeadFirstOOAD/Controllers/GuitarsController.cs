@@ -4,6 +4,7 @@ using Application1.Features.Guitars.Commands.Handlers;
 using Application1.Features.Guitars.Queries;
 using Application1.ViewModels;
 using MediatR;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
@@ -110,7 +111,7 @@ namespace HeadFirstOOAD.Controllers
         // POST: api/Guitars {"serialNumber":"1","price":"1","builder":"builder1","model":"model1","type":"type1","backWood":"backWood1","topWood":"topWood1"}
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-       // [Authorize(Roles = "admin")]
+       [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPost]
         [Route("PostGuitar")]
         public async Task<ActionResult> PostGuitarViewModel(GuitarViewModel GuitarViewModel)

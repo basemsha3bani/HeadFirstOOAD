@@ -20,14 +20,16 @@ namespace ServicesClasses
         public static IServiceCollection AddServicesOnWhichDataRepositoryDepend(this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>();
+           
             services.AddIdentity<IdentityUser,IdentityRole>()
+                
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();
             services.AddScoped<IGuitarOperations,GuitarOperations>();
             services.AddScoped<IUsersOperations, UsersOperations>();
             
             services.AddScoped<IContextGateway<Guitar>, ContextGateway<Guitar>>();
-            services.AddScoped<IContextGateway<IdentityUser>, ContextGateway<IdentityUser>>();
+           
            
             
             return services;
