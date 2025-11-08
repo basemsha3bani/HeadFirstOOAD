@@ -34,7 +34,7 @@ namespace HeadFirstOOAD.Helpers
             var scopedProvider = scope.ServiceProvider;
 
             var roleManager = scopedProvider.GetRequiredService<RoleManager<IdentityRole>>();
-            var userManager = scopedProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var userManager = scopedProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             // Roles to ensure exist
             var roles = new[] { "Admin", "Member" };
@@ -65,7 +65,7 @@ namespace HeadFirstOOAD.Helpers
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
             {
-                adminUser = new IdentityUser
+                adminUser = new ApplicationUser
                 {
                     UserName = adminUserName,
                     Email = adminEmail,
@@ -92,7 +92,7 @@ namespace HeadFirstOOAD.Helpers
             var memberUser = await userManager.FindByEmailAsync(memberEmail);
             if (memberUser == null)
             {
-                memberUser = new IdentityUser
+                memberUser = new ApplicationUser
                 {
                     UserName = memberUserName,
                     Email = memberEmail,

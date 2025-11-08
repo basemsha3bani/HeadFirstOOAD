@@ -7,7 +7,7 @@ using System.Text;
 
 namespace Domain.Entities.Schema.Security
 {
-    public class UsersHshs : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
        
 

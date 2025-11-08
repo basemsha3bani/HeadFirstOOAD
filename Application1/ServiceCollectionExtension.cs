@@ -20,7 +20,8 @@ namespace ServicesClasses
         {
 
            services.AddScoped<EnumMapper>();
-            services.AddScoped<AuthService>();
+            services.AddScoped<AuthService>()
+                    .AddScoped<RegistrationService>();
             services.AddMediatR(Assembly.GetExecutingAssembly())
                      .AddValidationServices();
 

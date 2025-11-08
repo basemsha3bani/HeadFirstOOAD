@@ -16,61 +16,63 @@ using System.Threading.Tasks;
 using Application1;
 
 using ServicesClasses;
+using Utils;
 
 internal class Program
 {
     private static async Task Main(string[] args)
     {
         var builder = WebApplication.CreateBuilder(args);
-        var appconfiguration = new Utils.Configuration.AppConfiguration();
+       
+       
         // Add services to the container.
 
-        builder.Services.Configure<JWT>(appconfiguration.JWT);
+        
         builder.Services.AddControllers();
 
-        builder.Services.AddAuthentication(options =>
-        {
-            options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        }).AddJwtBearer(o =>
-        {
-            o.RequireHttpsMetadata = false;
-            o.SaveToken = false;
-            o.TokenValidationParameters = new TokenValidationParameters
-            {
-                ValidateIssuer = true,
-                ValidateAudience = true,
-                ValidateIssuerSigningKey = true,
-                ValidateLifetime = true,
-                ValidIssuer = appconfiguration.JWT.GetSection("Issuer").Value,
-                ValidAudience = appconfiguration.JWT.GetSection("Audience").Value,
-                IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appconfiguration.JWT.GetSection("Key").Value))
+        //builder.Services.AddAuthentication(options =>
+        //{
+        //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+        //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+        //}).AddJwtBearer(o =>
+        //{
+        //    o.RequireHttpsMetadata = false;
+        //    o.SaveToken = false;
+        //    o.TokenValidationParameters = new TokenValidationParameters
+        //    {
+        //        ValidateIssuer = true,
+        //        ValidateAudience = true,
+        //        ValidateIssuerSigningKey = true,
+        //        ValidateLifetime = true,
+        //        ValidIssuer = appconfiguration.JWT.GetSection("Issuer").Value,
+        //        ValidAudience = appconfiguration.JWT.GetSection("Audience").Value,
+        //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appconfiguration.JWT.GetSection("Key").Value))
 
 
-            };
-        });
+        //    };
+        //});
 
 
         builder.Services.AddServicesOnWhichApplicationDepends();
-        builder.Services.AddServicesOnWhichDataRepositoryDepend();
-        builder.Services.AddMassTransit(config =>
-        {
+         builder.Services.AddServicesOnWhichDataRepositoryDepend(builder.Environment);
+       // builder.Services.AddMassTransit(config =>
+     //   {
 
 
 
-            config.UsingRabbitMq((ctx, cfg) =>
-            {
-                cfg.Host(appconfiguration.EventBusSettingsUri);
-                cfg.UseHealthCheck(ctx);
+            //config.UsingRabbitMq((ctx, cfg) =>
+            //{
+            //    cfg.Host(appconfiguration.EventBusSettingsUri);
+            //    cfg.UseHealthCheck(ctx);
 
-                cfg.ReceiveEndpoint(Utils.Events.EventBusConstants.UserLoginQueue.Queue, c =>
-                {
+            //    cfg.ReceiveEndpoint(Utils.Events.EventBusConstants.UserLoginQueue.Queue, c =>
+            //    {
 
-                });
-            });
-        });
-        builder.Services.AddMassTransitHostedService();
+            //    });
+            //});
+       // });
+      //  builder.Services.AddMassTransitHostedService();
         builder.Services.AddDistributedMemoryCache();
         var app = builder.Build();
         app.UseHttpsRedirection();

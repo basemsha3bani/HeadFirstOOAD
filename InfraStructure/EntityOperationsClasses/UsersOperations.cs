@@ -25,14 +25,16 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
 
         private EnumMapper _enumMapper;
        
-        UserManager<IdentityUser> _userManager;
+        UserManager<ApplicationUser> _userManager;
         AuthService _authService;
-        public UsersOperations(EnumMapper enumMapper, UserManager<IdentityUser> userManager,AuthService authService)
+        RegistrationService _registrationService;
+        public UsersOperations(EnumMapper enumMapper, UserManager<ApplicationUser> userManager,AuthService authService, RegistrationService  registrationService)
         {
             _enumMapper = enumMapper;
             
             _userManager = userManager;
-            _authService = authService;
+            _authService =authService ;
+            _registrationService = registrationService;
         }
 
 
@@ -53,10 +55,9 @@ namespace Domain.DataRepositoryEntities.DataRepositoryEntityOperationsClasses
 
         }
 
-
-
-       
-
-
+        public async Task<UsersViewModel> CreateUserAsync(UsersViewModel SearchCriteria = null)
+        {
+            return await _registrationService.RegisterAsync (SearchCriteria);  
+        }
     }
 }

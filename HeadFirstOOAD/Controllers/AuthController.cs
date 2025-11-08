@@ -16,10 +16,12 @@ namespace HeadFirstOOAD.Controllers
     {
         IMediator  _mediator;
         IPublishEndpoint _publishEndPoint;
-        public AuthController(IMediator mediator, IPublishEndpoint publishEndPoint)
+        public AuthController(IMediator mediator
+            //,IPublishEndpoint publishEndPoint
+            )
         {
             _mediator = mediator;
-            _publishEndPoint = publishEndPoint;
+            //_publishEndPoint = publishEndPoint;
         }
 
         [HttpPost("token")]
@@ -35,7 +37,7 @@ namespace HeadFirstOOAD.Controllers
             if (!result.IsAuthenticated)
                 return BadRequest(result.Message);
             //rabbit mq
-          await  _publishEndPoint.Publish(new UserLoginEvent { UserName=model.UserName}); ;
+          //await  _publishEndPoint.Publish(new UserLoginEvent { UserName=model.UserName}); ;
             return Ok(result);
         }
     }

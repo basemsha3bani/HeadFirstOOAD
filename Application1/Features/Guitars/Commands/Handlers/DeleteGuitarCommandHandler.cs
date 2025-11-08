@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Application1.Features.Guitars.Commands.Handlers
 {
-    public class DeleteGuitarCommandHandler : IRequestHandler<DeleteGuitarCommand>
+    public class DeleteGuitarCommandHandler : IRequestHandler<GuitarViewModel>
     {
         IGuitarOperations _guitarOperations;
 
@@ -19,7 +19,7 @@ namespace Application1.Features.Guitars.Commands.Handlers
             _guitarOperations = guitarOperations;
         }
 
-        public async Task<Unit> Handle(DeleteGuitarCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(GuitarViewModel request, CancellationToken cancellationToken)
         {
 
             await _guitarOperations.Delete(int.Parse(request.serialNumber));

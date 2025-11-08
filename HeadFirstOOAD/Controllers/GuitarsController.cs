@@ -89,9 +89,9 @@ namespace HeadFirstOOAD.Controllers
 
             try
             {
-                UpdateGuitarCommand updateGuitarCommand = (UpdateGuitarCommand)GuitarViewModel;
+                
                
-                await _mediator.Send(updateGuitarCommand);
+                await _mediator.Send(GuitarViewModel);
             }
             catch (DbUpdateConcurrencyException)
             {
@@ -111,7 +111,7 @@ namespace HeadFirstOOAD.Controllers
         // POST: api/Guitars {"serialNumber":"1","price":"1","builder":"builder1","model":"model1","type":"type1","backWood":"backWood1","topWood":"topWood1"}
         // To protect from overposting attacks, enable the specific properties you want to bind to, for
         // more details, see https://go.microsoft.com/fwlink/?linkid=2123754.
-       [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
+      // [Authorize(AuthenticationSchemes = JwtBearerDefaults.AuthenticationScheme, Roles = "Admin")]
         [HttpPost]
         [Route("PostGuitar")]
         public async Task<ActionResult> PostGuitarViewModel(GuitarViewModel GuitarViewModel)
@@ -119,9 +119,10 @@ namespace HeadFirstOOAD.Controllers
            
             try
             {
-                AddGuitarCommand addGuitarCommand = (AddGuitarCommand)GuitarViewModel;
+                
+                
 
-                await _mediator.Send(addGuitarCommand);
+                await _mediator.Send(GuitarViewModel);
                
             }
             catch (Exception ex)
@@ -137,7 +138,7 @@ namespace HeadFirstOOAD.Controllers
         public async Task<ActionResult<GuitarViewModel>> DeleteGuitarViewModel(string id)
         {
            
-            DeleteGuitarCommand deleteGuitarCommand = new DeleteGuitarCommand { serialNumber=id};
+            GuitarViewModel deleteGuitarCommand = new GuitarViewModel { serialNumber=id};
             var orders = await _mediator.Send(deleteGuitarCommand);
             
             return Ok();

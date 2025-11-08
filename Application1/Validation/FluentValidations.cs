@@ -3,6 +3,7 @@ using FluentValidation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using Utils.Enums;
@@ -23,9 +24,10 @@ namespace Application1.Validation
             //Keyvalue = keyvalue;
             //RuleFor(model => model.backWood).StringValueMustBeEnum(typeof(Wood));
             _enumMapper = enumMapper;
-            RuleFor(model => model.type).Must(backWoodValue => StringValueMustBeEnum(backWoodValue, typeof(GuitarType))).WithMessage("Invalid guitar Type");
-            RuleFor(model => model.topWood).Must(backWoodValue => StringValueMustBeEnum(backWoodValue, typeof(Wood))).WithMessage("Invalid topWood Type");
-            RuleFor(model => model.builder).Must(backWoodValue => StringValueMustBeEnum(backWoodValue, typeof(Builder))).WithMessage("Invalid builder Type");
+            RuleFor(model => model.serialNumber).Must(sn => !string.IsNullOrEmpty(sn)).WithMessage("serial number required");
+            RuleFor(model => model.type).Must(typeValue => StringValueMustBeEnum(typeValue, typeof(GuitarType))).WithMessage("Invalid guitar Type");
+            RuleFor(model => model.topWood).Must(topWoodValue => StringValueMustBeEnum(topWoodValue, typeof(Wood))).WithMessage("Invalid topWood Type");
+            RuleFor(model => model.builder).Must(topWoodValue => StringValueMustBeEnum(topWoodValue, typeof(Builder))).WithMessage("Invalid builder Type");
             RuleFor(model => model.backWood).Must(backWoodValue => StringValueMustBeEnum(backWoodValue, typeof(Wood))).WithMessage("Invalid BackWood Type");
         }
 

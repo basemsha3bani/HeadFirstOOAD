@@ -18,22 +18,22 @@ using Utils.Configuration;
 
 namespace DataRepository.GateWay
 {
-    public class AppDbContext: IdentityDbContext<IdentityUser>
+    public class AppDbContext: IdentityDbContext<ApplicationUser>
     {
 
-
-        public AppDbContext()
+        CustomConfiguration _customConfiguration;
+        public AppDbContext(CustomConfiguration configuration)
         {
-            
+            _customConfiguration = configuration;
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
-        AppConfiguration configuration = new AppConfiguration();
+       
 
-
-        string conn = configuration.ConnectionString;
+        
+        string conn = _customConfiguration._connectionString;
 
         optionsBuilder.UseSqlServer(conn);
     }
