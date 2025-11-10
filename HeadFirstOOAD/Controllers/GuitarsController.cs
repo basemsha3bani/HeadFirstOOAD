@@ -13,7 +13,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.StackExchangeRedis;
 using Newtonsoft.Json;
-
+using StackExchange.Redis;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,12 +30,14 @@ namespace HeadFirstOOAD.Controllers
     public class GuitarsController : ControllerBase
     {
         private readonly IMediator _mediator;
-        private IDistributedCache _cache;
+        private ConnectionMultiplexer _cache;
+        private IDatabase _cacheDatabase;
 
-        public GuitarsController(IMediator mediator,IDistributedCache cache)
+        public GuitarsController(IMediator mediator,ConnectionMultiplexer cache)
         {
             _mediator = mediator;
             _cache = cache;
+            _cacheDatabase = _cache.GetDatabase();
         }
 
         // GET: api/Guitars
@@ -43,24 +45,22 @@ namespace HeadFirstOOAD.Controllers
        
         public async Task<ActionResult<IEnumerable<GuitarViewModel>>> GetGuitarById(string id)
         {
-            var cachedguitar = await _cache.GetStringAsync(id);
-                if(cachedguitar != null)
+            
+            var cachedguitar = await _cacheDatabase.KeyExistsAsync(id);
+                if(cachedguitar != false)
             {
-                return Ok(JsonConvert.DeserializeObject<GuitarViewModel>(cachedguitar));
+                return Ok(JsonConvert.DeserializeObject<GuitarViewModel>(await _cacheDatabase.StringGetAsync(id)));
 
             }
             if (!await GuitarViewModelExists(id))
             {
                 return NotFound();
             }
-            await _cache.SetStringAsync(_guitarViewModel.serialNumber, JsonConvert.SerializeObject(_guitarViewModel));
+            await _cacheDatabase.StringSetAsync(_guitarViewModel.serialNumber, JsonConvert.SerializeObject(_guitarViewModel));
             DateTime currentdate = DateTime.Now;
             string time = currentdate.ToLocalTime().ToString();
-            var cacheOptions = new DistributedCacheEntryOptions
-            {
-                AbsoluteExpiration = DateTime.Now.AddMinutes(3)
-            };
-            _cache.Set("Time", Encoding.UTF8.GetBytes(time), cacheOptions);
+            
+           await _cacheDatabase.KeyExpireAsync(id, DateTime.Now.AddMinutes(3));
             return Ok(_guitarViewModel);
         }
         [Route("GetGuitars")]

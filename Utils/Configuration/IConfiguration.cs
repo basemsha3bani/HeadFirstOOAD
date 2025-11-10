@@ -15,6 +15,8 @@ namespace Utils.Configuration
         public  string _connectionString = string.Empty;
         public  object _jwt;
         public  object _EventBusSettingsUri;
+        protected object _CacheSettings;
+        public string CacheConnectionString;
 
         protected CustomConfiguration()
         {
@@ -37,7 +39,14 @@ namespace Utils.Configuration
             var appSetting = root.GetSection("ApplicationSettings");
             _jwt = root.GetSection("JWT");
             _EventBusSettingsUri = root.GetSection("EventBusSettings").GetSection("Uri").Value;
-           
+            _CacheSettings = (IConfigurationSection)root.GetSection("CacheSettings");
+            IConfigurationSection CacheSttingsSection= (IConfigurationSection)_CacheSettings; 
+            
+            CacheConnectionString = _CacheSettings != null ?new StringBuilder().Append(CacheSttingsSection.GetSection("Host").Value)
+                                                                                .Append(":")
+                                                                                .Append(CacheSttingsSection.GetSection("Port").Value).ToString() : string.Empty;
+
+
         }
     }
 
@@ -64,7 +73,9 @@ namespace Utils.Configuration
 
             keyVaultName = "EventBusSettings";
             kvUri = $"https://{keyVaultName}.vault.azure.net";
-            _EventBusSettingsUri = new SecretClient(new Uri(kvUri), new DefaultAzureCredential(true));
+            
+            KeyVaultSecret _EventBusSettings = client.GetSecret("Uri");
+            _EventBusSettingsUri = _EventBusSettings.Value;
 
 
         }

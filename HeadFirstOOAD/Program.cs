@@ -17,6 +17,7 @@ using Application1;
 
 using ServicesClasses;
 using Utils;
+using Utils.Configuration;
 
 internal class Program
 {
@@ -30,49 +31,32 @@ internal class Program
         
         builder.Services.AddControllers();
 
-        //builder.Services.AddAuthentication(options =>
-        //{
-        //    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
-        //    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-        //    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
-        //}).AddJwtBearer(o =>
-        //{
-        //    o.RequireHttpsMetadata = false;
-        //    o.SaveToken = false;
-        //    o.TokenValidationParameters = new TokenValidationParameters
-        //    {
-        //        ValidateIssuer = true,
-        //        ValidateAudience = true,
-        //        ValidateIssuerSigningKey = true,
-        //        ValidateLifetime = true,
-        //        ValidIssuer = appconfiguration.JWT.GetSection("Issuer").Value,
-        //        ValidAudience = appconfiguration.JWT.GetSection("Audience").Value,
-        //        IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(appconfiguration.JWT.GetSection("Key").Value))
 
 
-        //    };
-        //});
 
-
-        builder.Services.AddServicesOnWhichApplicationDepends();
+        builder.Services.AddServicesOnWhichApplicationDepends()
+                .AddConfigurationBasedOnEnvironment(builder.Environment);
          builder.Services.AddServicesOnWhichDataRepositoryDepend(builder.Environment);
-       // builder.Services.AddMassTransit(config =>
-     //   {
+        var svcs = builder.Services.BuildServiceProvider();
+        ProductionConfiguration productionConfiguration = builder.Environment.IsProduction()?(ProductionConfiguration) svcs.GetRequiredService<CustomConfiguration>():null;
+        localConfiguration localConfiguration = builder.Environment.IsDevelopment() ?(localConfiguration) svcs.GetService<CustomConfiguration>():null;
+        builder.Services.AddMassTransit(config =>
+        {
 
 
 
-            //config.UsingRabbitMq((ctx, cfg) =>
-            //{
-            //    cfg.Host(appconfiguration.EventBusSettingsUri);
-            //    cfg.UseHealthCheck(ctx);
+            config.UsingRabbitMq((ctx, cfg) =>
+            {
+                cfg.Host(productionConfiguration != null? productionConfiguration._EventBusSettingsUri.ToString():localConfiguration._EventBusSettingsUri.ToString());
+                cfg.UseHealthCheck(ctx);
 
-            //    cfg.ReceiveEndpoint(Utils.Events.EventBusConstants.UserLoginQueue.Queue, c =>
-            //    {
+                cfg.ReceiveEndpoint(Utils.Events.EventBusConstants.UserLoginQueue.Queue, c =>
+                {
 
-            //    });
-            //});
-       // });
-      //  builder.Services.AddMassTransitHostedService();
+                });
+            });
+        });
+        builder.Services.AddMassTransitHostedService();
         builder.Services.AddDistributedMemoryCache();
         var app = builder.Build();
         app.UseHttpsRedirection();
